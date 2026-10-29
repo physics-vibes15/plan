@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Plan">
+<title>Plan: Nov 1 to Jan 30</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#EDEFF4; --surface:#FFFFFF; --surface2:#E1E5EE; --ink:#1A2233; --ink2:#5D6678; --line:#CFD5E0;
+  --live:#D9731A; --live-soft:#FBE8D6; --done:#2E8B57; --done-soft:#DCF0E3; --focus:#2457C5; --gold:#C9962B;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1420; --surface:#161F30; --surface2:#1F2A40; --ink:#ECE6DA; --ink2:#8E97AA; --line:#283449;
+  --live:#F2A33A; --live-soft:#3A2A14; --done:#7BC47F; --done-soft:#1A3324; --focus:#8FB3FF; --gold:#E3B75C; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E1420; --surface:#161F30; --surface2:#1F2A40; --ink:#ECE6DA; --ink2:#8E97AA; --line:#283449;
+  --live:#F2A33A; --live-soft:#3A2A14; --done:#7BC47F; --done-soft:#1A3324; --focus:#8FB3FF; --gold:#E3B75C; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;font-size:16px;line-height:1.45;min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:var(--focus)}
+button{font:inherit;color:inherit}
+.wrap{max-width:640px;margin:0 auto;padding:12px 16px 96px}
+h1{font-family:"Fraunces",Georgia,serif;font-size:22px;font-weight:600;margin:4px 0 12px;display:flex;justify-content:space-between;align-items:baseline;letter-spacing:-.2px}
+h1 span{font-family:"IBM Plex Sans",sans-serif;font-weight:400;color:var(--ink2);font-size:14px}
+h2{font-size:14px;font-weight:600;margin:20px 0 8px;color:var(--ink2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.hero{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 16px;margin-bottom:10px}
+.hero .streak{font-family:"Fraunces",Georgia,serif;font-size:34px;font-weight:600;line-height:1}
+.hero .streak small{font-family:"IBM Plex Sans",sans-serif;font-size:13px;color:var(--ink2);font-weight:400;margin-left:6px}
+.hero .sub{font-size:13px;color:var(--ink2);margin-top:4px}
+.ring{width:64px;height:64px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.now{border:2px solid var(--live)}
+.now .label{font-size:13px;color:var(--live);font-weight:600}
+.now .title{font-family:"Fraunces",Georgia,serif;font-size:26px;font-weight:600;margin:2px 0 4px;line-height:1.15}
+.now .detail{color:var(--ink2);font-size:15px;white-space:pre-line}
+.clock{font-size:54px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-1px;line-height:1;margin:10px 0 6px}
+.clock small{font-size:14px;font-weight:500;color:var(--ink2);letter-spacing:0;margin-left:8px}
+.bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin:8px 0 12px}
+.bar i{display:block;height:100%;background:var(--live);width:0}
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--ink2);font-size:14px;padding-top:10px;border-top:1px solid var(--line);margin-top:10px}
+.next b{color:var(--ink);font-weight:600}
+.row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row.cur{background:var(--live-soft);margin:0 -16px;padding:10px 16px;border-radius:8px}
+.row.past{opacity:.55}
+.row .t{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:14px;width:84px;flex:none;padding-top:2px}
+.row .n{flex:1;min-width:0}
+.row .n b{font-weight:600}
+.row .n small{display:block;color:var(--ink2);font-size:13px;white-space:pre-line}
+.row .n .vid{display:inline-block;font-size:13px;margin-top:4px;text-decoration:none}
+.chk{flex:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:transparent;cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .12s}
+.chk[aria-checked="true"]{background:var(--done);border-color:var(--done);color:#fff}
+.chk:active{transform:scale(.9)}
+.chk:focus-visible,button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.btn{display:inline-block;background:var(--ink);color:var(--bg);border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;text-decoration:none}
+.btn.sec{background:var(--surface2);color:var(--ink)}
+.btn.live{background:var(--live);color:#1A1208}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.note{width:100%;margin-top:8px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font:inherit;font-size:14px;min-height:40px;resize:vertical}
+.notebtn{background:none;border:0;color:var(--ink2);font-size:13px;padding:2px 0;cursor:pointer;text-decoration:underline}
+.banner{position:fixed;left:12px;right:12px;bottom:calc(72px + env(safe-area-inset-bottom,0px));background:var(--live);color:#1A1208;border-radius:14px;padding:12px 14px;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:20;display:none;max-width:616px;margin:0 auto}
+.banner.show{display:block}
+.banner b{display:block;font-size:16px}
+.banner button{margin-top:8px;background:#1A1208;color:#fff;border:0;border-radius:8px;padding:6px 12px;font-weight:600;cursor:pointer}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));display:flex;justify-content:space-around;z-index:15}
+nav a{flex:1;text-align:center;text-decoration:none;color:var(--ink2);font-size:12px;font-weight:500;padding:6px 2px;border-radius:8px}
+nav a.on{color:var(--live);background:var(--live-soft)}
+nav a span{display:block;font-size:18px;line-height:1.1}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tabs button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:14px;cursor:pointer}
+.tabs button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.prob{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.prob:last-child{border-bottom:0}
+.prob .lv{font-size:12px;color:var(--ink2);width:18px;flex:none}
+.prob .nm{flex:1;min-width:0}
+.prob a{font-size:13px;text-decoration:none;white-space:nowrap}
+.muted{color:var(--ink2);font-size:14px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;font-size:15px}
+.pill{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:var(--surface2);color:var(--ink2)}
+.pill.ok{background:var(--done-soft);color:var(--done)}
+.pill.warn{background:var(--live-soft);color:var(--live)}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:12px}
+.wk button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 2px;font-size:13px;cursor:pointer;line-height:1.2;position:relative}
+.wk button b{display:block;font-size:16px}
+.wk button.on{border-color:var(--live);color:var(--live)}
+.wk button.today{background:var(--surface2)}
+.wk button i{position:absolute;top:4px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--done)}
+.xp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.xp div{background:var(--surface2);border-radius:10px;padding:8px 10px}
+.xp b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
+.xp span{font-size:12px;color:var(--ink2)}
+.plant{display:flex;gap:14px;align-items:center}
+.plant svg{width:84px;height:96px;flex:none}
+ul{padding-left:18px;margin:6px 0}
+li{margin:4px 0}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
+@media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} canvas#fx{display:none} }
+@media (min-width:700px){ .clock{font-size:66px} }
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="wrap">
+  <h1 id="h1">Plan <span id="h1s"></span></h1>
+  <main id="view"></main>
+</div>
+<div class="banner" id="banner" role="status" aria-live="polite"><b id="bannerTitle"></b><span id="bannerText"></span><button id="bannerClose">Got it</button></div>
+<nav aria-label="Views">
+  <a href="#today" data-v="today"><span>&#9673;</span>Now</a>
+  <a href="#week" data-v="week"><span>&#9638;</span>Week</a>
+  <a href="#plan" data-v="plan"><span>&#9776;</span>Plan</a>
+  <a href="#links" data-v="links"><span>&#9741;</span>Links</a>
+  <a href="#setup" data-v="setup"><span>&#9881;</span>Setup</a>
+</nav>
+<script>
+/* ---------------- Data ---------------- */
+const START = new Date(2026,10,2); // Mon Nov 2, 2026 (local)
+const END = new Date(2027,0,24,23,59,59);
+
+const WEEKS = [
+ {w:1,d:"Nov 2-8",code:"1 problem a day: Arrays & Hashing (Week 1 rows in Links)",ml:"Karpathy micrograd (video 1). Watch, code along",proj:"Set up repo, Python env, pick 2 small code datasets (HumanEval subset + Juliet samples). README with the plan",fri:"Resume rewritten to NVIDIA/Amazon vocabulary. Job alerts: NVIDIA careers, Amazon Applied Scientist. Story 1: IBM pipeline"},
+ {w:2,d:"Nov 9-15",code:"2 a day: Two Pointers, Sliding Window",ml:"makemore 1-2. Illustrated Transformer",proj:"Baseline: run an open model via NIM API on the tasks, store outputs. Simple pass/fail grader",fri:"2 applications. 5 LinkedIn messages (NVIDIA UCI alumni, ex-IBM). Story 2: UCI lab"},
+ {w:3,d:"Nov 16-22",code:"2 a day: Stack, Binary Search",ml:"makemore 3-4. NVIDIA DLI Fundamentals of Deep Learning modules 1-2",proj:"Rubric grader: correctness, tests, quality, calibrated confidence. Conformal set on grader scores",fri:"2 applications. 5 messages. Story 3: paper rejected, revised"},
+ {w:4,d:"Nov 23-24 and Dec 1-5",code:"Thanksgiving: 1 a day, Linked List",ml:"Rest or catch up",proj:"Saturday only: first results table",fri:"Story 4: disagreement with a co-author. Re-test Polaris puzzle variant"},
+ {w:5,d:"Dec 6-12",code:"2 a day: Trees part 1",ml:"makemore 5, Let's build GPT. DLI modules 3-4",proj:"TensorRT-LLM quickstart or NIM local; serve the model yourself, measure latency and throughput",fri:"2 applications. 5 messages. Story 5: learning a new stack fast"},
+ {w:6,d:"Dec 13-19",code:"2 a day: Trees part 2, Heaps",ml:"GPT tokenizer video. CUDA guide ch 1-3",proj:"Benchmark: batch size vs latency, quantization on/off. Plots",fri:"2 applications. 5 messages. Story 6: leading without authority"},
+ {w:7,d:"Dec 20-26",code:"Holiday: 3 problems total",ml:"None",proj:"Family time",fri:"Story 7: a mistake caught late. Map stories so far to Amazon LPs"},
+ {w:8,d:"Dec 27-Jan 2",code:"2 a day: Tries, Backtracking",ml:"Horace He 'Go Brrrr'. FlashAttention. Attention Is All You Need re-read",proj:"Write-up v1: README with results table, grader failure modes, cost per eval",fri:"2 applications. 5 messages. Story 8: deadline triage"},
+ {w:9,d:"Jan 3-9",code:"2 a day: Graphs part 1",ml:"Quantization and KV cache (NVIDIA tech blog). GPU MODE lecture 1",proj:"Publish project on GitHub. Post in NVIDIA Discord and LinkedIn. One line on resume",fri:"2 applications. 5 messages. Ask the 2 warmest contacts about referrals"},
+ {w:10,d:"Jan 10-16",code:"2 a day: Graphs part 2",ml:"ML system design: Chip Huyen DMLS ch 1-4. Amazon Applied Scientist loop format",proj:"Open a good-first-issue or docs PR in NeMo Guardrails or TensorRT-LLM",fri:"2 applications. 5 messages. Mock behavioral, 30 min"},
+ {w:11,d:"Jan 17-23",code:"2 a day: DP part 1",ml:"DMLS ch 5-8. Practice 2 ML design prompts aloud",proj:"PR follow-up. Project 3-minute walkthrough rehearsed",fri:"2 applications. 5 messages. Mock coding on interviewing.io"},
+ {w:12,d:"Jan 24-30",code:"2 a day: DP part 2, Greedy, String parsing. Sat full mock",ml:"ML breadth review: bias/variance, regularization, metrics, transformers, RAG, fine-tuning, evaluation",proj:"Review all notes. Update where each application stands",fri:"2 applications. 5 messages. Plan next 12 weeks"}
+];
+
+const PROBLEMS = [
+[1,"Two Sum","E","two-sum"],[1,"Group Anagrams","M","group-anagrams"],[1,"Top K Frequent Elements","M","top-k-frequent-elements"],[1,"Product of Array Except Self","M","product-of-array-except-self"],[1,"Longest Consecutive Sequence","M","longest-consecutive-sequence"],
+[2,"3Sum","M","3sum"],[2,"Container With Most Water","M","container-with-most-water"],[2,"Trapping Rain Water","H","trapping-rain-water"],[2,"Longest Substring Without Repeating Characters","M","longest-substring-without-repeating-characters"],[2,"Longest Repeating Character Replacement","M","longest-repeating-character-replacement"],[2,"Minimum Window Substring","H","minimum-window-substring"],[2,"Sliding Window Maximum","H","sliding-window-maximum"],
+[3,"Min Stack","M","min-stack"],[3,"Daily Temperatures","M","daily-temperatures"],[3,"Car Fleet","M","car-fleet"],[3,"Largest Rectangle in Histogram","H","largest-rectangle-in-histogram"],[3,"Search in Rotated Sorted Array","M","search-in-rotated-sorted-array"],[3,"Koko Eating Bananas","M","koko-eating-bananas"],[3,"Time Based Key-Value Store","M","time-based-key-value-store"],[3,"Median of Two Sorted Arrays","H","median-of-two-sorted-arrays"],
+[4,"Reorder List","M","reorder-list"],[4,"LRU Cache","M","lru-cache"],[4,"Merge k Sorted Lists","H","merge-k-sorted-lists"],
+[5,"Binary Tree Level Order Traversal","M","binary-tree-level-order-traversal"],[5,"Validate Binary Search Tree","M","validate-binary-search-tree"],[5,"Construct Binary Tree from Preorder and Inorder","M","construct-binary-tree-from-preorder-and-inorder-traversal"],[5,"Lowest Common Ancestor of a BST","M","lowest-common-ancestor-of-a-binary-search-tree"],[5,"Kth Smallest Element in a BST","M","kth-smallest-element-in-a-bst"],[5,"Binary Tree Right Side View","M","binary-tree-right-side-view"],[5,"Count Good Nodes in Binary Tree","M","count-good-nodes-in-binary-tree"],[5,"Diameter of Binary Tree","E","diameter-of-binary-tree"],
+[6,"Binary Tree Maximum Path Sum","H","binary-tree-maximum-path-sum"],[6,"Serialize and Deserialize Binary Tree","H","serialize-and-deserialize-binary-tree"],[6,"Kth Largest Element in an Array","M","kth-largest-element-in-an-array"],[6,"Task Scheduler","M","task-scheduler"],[6,"K Closest Points to Origin","M","k-closest-points-to-origin"],[6,"Find Median from Data Stream","H","find-median-from-data-stream"],[6,"Design Twitter","M","design-twitter"],[6,"Last Stone Weight","E","last-stone-weight"],
+[8,"Implement Trie (Prefix Tree)","M","implement-trie-prefix-tree"],[8,"Design Add and Search Words","M","design-add-and-search-words-data-structure"],[8,"Word Search II","H","word-search-ii"],[8,"Subsets","M","subsets"],[8,"Combination Sum","M","combination-sum"],[8,"Permutations","M","permutations"],[8,"Word Search","M","word-search"],[8,"N-Queens","H","n-queens"],
+[9,"Number of Islands","M","number-of-islands"],[9,"Clone Graph","M","clone-graph"],[9,"Rotting Oranges","M","rotting-oranges"],[9,"Pacific Atlantic Water Flow","M","pacific-atlantic-water-flow"],[9,"Course Schedule","M","course-schedule"],[9,"Course Schedule II","M","course-schedule-ii"],[9,"Redundant Connection","M","redundant-connection"],[9,"Word Ladder","H","word-ladder"],
+[10,"Network Delay Time","M","network-delay-time"],[10,"Min Cost to Connect All Points","M","min-cost-to-connect-all-points"],[10,"Cheapest Flights Within K Stops","M","cheapest-flights-within-k-stops"],[10,"Accounts Merge","M","accounts-merge"],[10,"Reconstruct Itinerary","H","reconstruct-itinerary"],[10,"Swim in Rising Water","H","swim-in-rising-water"],[10,"Longest Increasing Path in a Matrix","H","longest-increasing-path-in-a-matrix"],[10,"Evaluate Division","M","evaluate-division"],
+[11,"House Robber II","M","house-robber-ii"],[11,"Longest Palindromic Substring","M","longest-palindromic-substring"],[11,"Decode Ways","M","decode-ways"],[11,"Coin Change","M","coin-change"],[11,"Longest Increasing Subsequence","M","longest-increasing-subsequence"],[11,"Word Break","M","word-break"],[11,"Partition Equal Subset Sum","M","partition-equal-subset-sum"],[11,"Longest Common Subsequence","M","longest-common-subsequence"],
+[12,"Edit Distance","H","edit-distance"],[12,"Interleaving String","M","interleaving-string"],[12,"Regular Expression Matching","H","regular-expression-matching"],[12,"Merge Intervals","M","merge-intervals"],[12,"Non-overlapping Intervals","M","non-overlapping-intervals"],[12,"Jump Game II","M","jump-game-ii"],[12,"Decode String","M","decode-string"],[12,"Basic Calculator II","M","basic-calculator-ii"],[12,"Text Justification","H","text-justification"],[12,"Insert Delete GetRandom O(1)","M","insert-delete-getrandom-o1"]
+];
+
+const ART = [
+ "Procreate Beginner's Series ep 1-2 (interface, gestures, layers)","Beginner's Series ep 3-4 (brushes, color). Install Bardot Brush free set","Beginner's Series ep 5-6 (selections, transform, alpha lock, clipping mask)","Rest or catch up","Drawabox Lesson 1 part 1 (lines, ellipses)","Drawabox Lesson 1 part 2 (boxes, perspective)","Holiday: Proko gesture video","Art with Flo: beginner Procreate illustration, follow along","Procreate Animation Assist tutorial","Ctrl+Paint: values and edges","Adobe Fresco: vector brushes and live watercolor","Bardot Brush: lettering or pattern. Make one finished piece"
+];
+const ARTSUN = [
+ "Draw 10 cups and bowls from the kitchen, line only","Color the best 3 cups, 3 brushes each","Redraw one of your paintings with layers","Free draw 30 min","Drawabox homework: lines and ellipses","Draw your desk in 2-point perspective","Gesture sketches of family on video calls","Repeat the tutorial subject in your own colors","12-frame loop: bouncing ball, blinking character","One object, light from one side, values only","Same object in Fresco. Compare","Finished illustration for Instagram. Post it"
+];
+
+const LINKS = {
+ coding:[["NeetCode 150 roadmap","https://neetcode.io/roadmap"],["LeetCode problemset","https://leetcode.com/problemset/"],["NeetCode YouTube","https://www.youtube.com/@NeetCode"],["Codeforces problemset","https://codeforces.com/problemset"],["interviewing.io","https://interviewing.io"]],
+ ml:[["Karpathy Zero to Hero","https://karpathy.ai/zero-to-hero.html"],["Illustrated Transformer","https://jalammar.github.io/illustrated-transformer/"],["Dive into Deep Learning","https://d2l.ai"],["Hugging Face LLM course","https://huggingface.co/learn"],["ML Interviews Book (Chip Huyen)","https://huyenchip.com/ml-interviews-book/"],["Lilian Weng blog","https://lilianweng.github.io"]],
+ gpu:[["NVIDIA DLI","https://www.nvidia.com/en-us/training/"],["CUDA C Programming Guide","https://docs.nvidia.com/cuda/cuda-c-programming-guide/"],["Making Deep Learning Go Brrrr","https://horace.io/brrr_intro.html"],["GPU MODE lectures","https://www.youtube.com/@GPUMODE"],["NVIDIA Technical Blog","https://developer.nvidia.com/blog"],["build.nvidia.com (NIM)","https://build.nvidia.com"],["TensorRT-LLM","https://github.com/NVIDIA/TensorRT-LLM"],["NeMo Guardrails","https://github.com/NVIDIA/NeMo-Guardrails"],["NVIDIA careers","https://www.nvidia.com/en-us/about-nvidia/careers/"]],
+ papers:[["Attention Is All You Need","https://arxiv.org/abs/1706.03762"],["FlashAttention","https://arxiv.org/abs/2205.14135"],["LoRA","https://arxiv.org/abs/2106.09685"],["SWE-bench Verified","https://openai.com/index/introducing-swe-bench-verified/"],["METR long tasks","https://arxiv.org/abs/2503.14499"],["GSM-Symbolic","https://arxiv.org/abs/2410.05229"]],
+ jobs:[["Amazon Leadership Principles","https://www.amazon.jobs/content/en/our-workplace/leadership-principles"],["Interviewing at Amazon","https://www.amazon.jobs/content/en/how-we-hire/interviewing-at-amazon"],["Amazon Applied Scientist search","https://www.amazon.jobs/en/search?base_query=applied+scientist"],["Google: how we hire","https://www.google.com/about/careers/applications/how-we-hire/"],["NVIDIA Developer Forums","https://forums.developer.nvidia.com"]],
+ art:[["Procreate YouTube","https://www.youtube.com/@Procreate"],["Procreate Handbook","https://procreate.com/handbook"],["Bardot Brush","https://bardotbrush.com"],["Art with Flo","https://www.youtube.com/@ArtwithFlo"],["Drawabox","https://drawabox.com"],["Proko","https://www.youtube.com/@ProkoTV"],["Ctrl+Paint","https://www.ctrlpaint.com"],["Adobe Fresco","https://www.adobe.com/products/fresco.html"],["Brad Colbow (iPad apps)","https://www.youtube.com/@BradColbow"]],
+ income:[["Wyzant (tutoring)","https://www.wyzant.com"],["Upwork","https://www.upwork.com"],["Contra","https://contra.com"]]
+};
+
+/* ---------------- Schedule ---------------- */
+// time as minutes. kind: code|ml|proj|fri|gym|home|art|content|income|journal|life|office|paint|sleep
+function S(a,b,name,kind,detail){return {s:a,e:b,name,kind,detail:detail||""};}
+const M=(h,m)=>h*60+(m||0);
+
+function weekdaySessions(week,dow){ // dow 1..5
+  const W=WEEKS[week-1]; const ramp = week===1;
+  const gymDay = ramp ? (dow===1||dow===3) : (dow===1||dow===3||dow===5);
+  const evening = (()=>{
+    if(dow===5) return ["Applications and outreach","fri",W.fri];
+    if(dow===1||dow===2) return ["ML and GPU fundamentals","ml",W.ml];
+    return ["Project","proj",W.proj];
+  })();
+  const sk = (dow===2||dow===4);
+  if(ramp) return [
+    S(M(6,0),M(6,45),"Coding: 1 timed problem","code",W.code),
+    S(M(6,45),M(8,0),"Breakfast, get ready, leave","life"),
+    S(M(8,30),M(17,0),"Office","office","Lunch: 20 min reading (NVIDIA blog, Lilian Weng, or a paper)"),
+    S(M(17,0),M(17,45),"Commute, change","life"),
+    gymDay?S(M(17,45),M(18,45),"Gym","gym",dow===1?"Strength":"Cardio"):S(M(17,45),M(18,45),"Free","life","Ramp week: no evening chores scheduled"),
+    S(M(18,45),M(19,45),"Cook, eat, pack lunch","life"),
+    S(M(19,45),M(20,15),"Call home","home"),
+    S(M(20,15),M(21,0),evening[0],evening[1],evening[2]),
+    S(M(21,0),M(21,30),"Free","life"),
+    S(M(21,30),M(21,45),"Journal","journal","Paper. 3 lines: did, learned, tomorrow"+(sk?"\nThen 15 min iPad sketch (Night Shift on)":"")),
+    S(M(22,0),M(24,0),"Sleep","sleep")
+  ];
+  return [
+    S(M(5,10),M(6,40),"Coding: 2 timed problems","code",W.code+"\n25 min each, then review and write the pattern down"),
+    S(M(6,40),M(7,20),"Breakfast","life"),
+    S(M(7,20),M(8,0),"Get ready, leave","life"),
+    S(M(8,30),M(17,0),"Office","office","Lunch: 20 min reading (NVIDIA blog, Lilian Weng, or a paper)"),
+    S(M(17,0),M(17,45),"Commute, change","life"),
+    gymDay?S(M(17,45),M(18,45),"Gym","gym",dow===3?"Cardio":"Strength"):S(M(17,45),M(18,45),"Cleaning 30 + errands 30","life","Kitchen, bathroom, floors on rotation"),
+    S(M(18,45),M(19,45),"Cook, eat, pack lunch","life"),
+    S(M(19,45),M(20,15),"Call home","home"),
+    S(M(20,15),M(21,30),evening[0],evening[1],evening[2]),
+    S(M(21,30),M(21,45),"Journal","journal","Paper. 3 lines: did, learned, tomorrow"+(sk?"\nThen 15 min iPad sketch (Night Shift on)":"")),
+    S(M(22,0),M(24,0),"Sleep","sleep")
+  ];
+}
+function satSessions(week){ const W=WEEKS[week-1]; return [
+  S(M(6,30),M(7,0),"Wake, stretch, tea","life"),
+  S(M(7,0),M(8,30),"Coding mock: 2 problems, timed","code",W.code+"\n60 min timed, 30 min review"),
+  S(M(8,30),M(9,30),"Content: write and record one reel","content","One reel a week, no more"),
+  S(M(9,30),M(10,30),"Breakfast","life"),
+  S(M(10,30),M(12,30),"Project","proj",W.proj),
+  S(M(12,30),M(13,30),"Lunch","life"),
+  S(M(13,30),M(15,30),"Clean, laundry, groceries","life"),
+  S(M(15,30),M(17,0),"Gym","gym"),
+  S(M(17,0),M(18,0),"Digital art","art",ART[week-1]),
+  S(M(18,0),M(19,0),"Side income hour","income","One option at a time. Week 1: Wyzant profile"),
+  S(M(19,0),M(20,0),"Dinner","life"),
+  S(M(20,0),M(20,30),"Call home","home"),
+  S(M(20,30),M(21,30),"Content: edit and schedule the reel","content"),
+  S(M(21,30),M(21,45),"Journal","journal","Paper. 3 lines"),
+  S(M(22,0),M(24,0),"Sleep","sleep")
+];}
+function sunSessions(week){ const W=WEEKS[week-1]; return [
+  S(M(6,30),M(7,0),"Wake, stretch, tea","life"),
+  S(M(7,0),M(9,30),"ML deep dive","ml",W.ml),
+  S(M(9,30),M(10,30),"Breakfast","life"),
+  S(M(10,30),M(12,30),"Project","proj",W.proj),
+  S(M(12,30),M(13,30),"Lunch","life"),
+  S(M(13,30),M(15,30),"Applications, LinkedIn, tracker","fri",W.fri),
+  S(M(15,30),M(16,30),"Paint or sketch","paint",ARTSUN[week-1]+"\nTraditional, no screen"),
+  S(M(16,30),M(17,0),"Free","life"),
+  S(M(17,0),M(19,0),"Cook, eat, plan the week","life","Write Mon-Fri targets. Groceries list"),
+  S(M(20,0),M(20,30),"Call home","home"),
+  S(M(20,30),M(21,30),"Light reading","ml"),
+  S(M(21,30),M(21,45),"Journal","journal","Paper. 3 lines"),
+  S(M(22,0),M(24,0),"Sleep","sleep")
+];}
+
+function pauses(){ return (state&&state.settings&&state.settings.pauses)||[]; }
+function isPaused(d){ const k=iso(d); return pauses().some(p=>k>=p.from&&k<=p.to); }
+function pausedBefore(k){ let n=0; pauses().forEach(p=>{ const a=p.from>"2026-11-02"?p.from:"2026-11-02"; if(a>p.to) return; const end=p.to<k?p.to:null; if(!end) { if(a<k) n+=Math.round((new Date(k+"T12:00:00")-new Date(a+"T12:00:00"))/864e5); return; } n+=Math.round((new Date(end+"T12:00:00")-new Date(a+"T12:00:00"))/864e5)+1; }); return n; }
+function weekOf(d){ const t=new Date(d.getFullYear(),d.getMonth(),d.getDate()); let diff=Math.floor((t-START)/864e5); if(diff<0) return 0; diff-=pausedBefore(iso(t)); if(diff<0) diff=0; const w=Math.floor(diff/7)+1; return w>12?13:w; }
+function kickoffSessions(){ return [
+  S(M(7,0),M(7,30),"Wake, stretch, tea","life","Day 1. Keep it light; the goal is to start"),
+  S(M(7,30),M(9,0),"ML: Karpathy micrograd, first half","ml","Watch and code along. Stop at 90 min even if unfinished"),
+  S(M(9,0),M(10,0),"Breakfast","life"),
+  S(M(10,0),M(12,0),"Project setup","proj","GitHub repo llm-code-eval-harness, Python env pinned, README with the plan"),
+  S(M(12,0),M(13,0),"Lunch","life"),
+  S(M(13,0),M(15,0),"Resume and alerts","fri","Rewrite resume in NVIDIA/Amazon vocabulary. Job alerts: NVIDIA careers, Amazon Applied Scientist. Start Wyzant profile"),
+  S(M(15,0),M(15,30),"Free","life"),
+  S(M(15,30),M(16,30),"Paint or sketch","paint","Anything. No screen"),
+  S(M(17,0),M(19,0),"Cook, eat, plan the week","life","Add plan-alarms.ics to Calendar. Add this page to Home Screen. Lay out tomorrow's clothes and bag"),
+  S(M(20,0),M(20,30),"Call home","home"),
+  S(M(20,30),M(21,30),"Light reading","ml","Illustrated Transformer, or install Procreate brushes"),
+  S(M(21,30),M(21,45),"Journal","journal","Paper. 3 lines: did, learned, tomorrow"),
+  S(M(22,0),M(24,0),"Sleep","sleep","Alarm 5:50 for the ramp week")
+];}
+function sessionsFor(d){
+  if(isPaused(d)) return [];
+  if(iso(d)==="2026-11-01") return kickoffSessions();
+  const w=weekOf(d); if(w<1||w>12) return [];
+  const dow=d.getDay();
+  if(dow===0) return sunSessions(w); if(dow===6) return satSessions(w); return weekdaySessions(w,dow);
+}
+const fmt=m=>{ let h=Math.floor(m/60)%24, mm=m%60; const ap=h<12?"am":"pm"; h=h%12||12; return h+":"+String(mm).padStart(2,"0")+ap; };
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const DAYN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+/* ---------------- Videos per session ---------------- */
+const YT=q=>"https://www.youtube.com/results?search_query="+encodeURIComponent(q);
+const MLVID={1:["Karpathy micrograd",YT("Karpathy micrograd spelled-out intro")],2:["makemore part 1",YT("Karpathy makemore part 1")],3:["makemore part 3",YT("Karpathy makemore part 3")],5:["Let's build GPT",YT("Karpathy Let's build GPT from scratch")],6:["GPT tokenizer",YT("Karpathy Let's build the GPT tokenizer")],7:["FlashAttention explained",YT("FlashAttention explained")],9:["GPU MODE lecture 1",YT("GPU MODE lecture 1")],10:["ML system design",YT("ML system design interview")],11:["ML system design",YT("ML system design interview fraud detection")],12:["ML interview breadth",YT("machine learning interview questions bias variance transformers")]};
+function videoFor(s,week){
+  if(s.kind==="code") return ["NeetCode videos",YT("NeetCode "+(WEEKS[week-1]||WEEKS[0]).code.split(":").pop().split(",")[0].trim())];
+  if(s.kind==="ml") return MLVID[week]||["Karpathy Zero to Hero","https://karpathy.ai/zero-to-hero.html"];
+  if(s.kind==="art") return ["Watch: "+ART[week-1].split(".")[0],YT(ART[week-1].split(".")[0])];
+  if(s.kind==="gym") return null; return null;
+}
+
+/* ---------------- State ---------------- */
+let state={done:{},problems:{},notes:{},settings:{sound:true,notify:true,preMin:10,pauses:[{from:"2026-11-25",to:"2026-11-30",why:"Trip"}]}};
+let db=null, uid=null, docRef=null, saveTimer=null, dbSaving=false, dbDirty=false;
+function loadLocal(){ try{ const s=localStorage.getItem("plan-state"); if(s){ const o=JSON.parse(s); state.done=o.done||{}; state.problems=o.problems||{}; state.notes=o.notes||{}; state.settings=Object.assign(state.settings,o.settings||{}); } }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem("plan-state",JSON.stringify(state)); }catch(e){} }
+async function flushDb(){ if(!docRef) return; if(dbSaving){dbDirty=true;return;} dbSaving=true; try{ await docRef.set(state); }catch(e){} dbSaving=false; if(dbDirty){dbDirty=false; flushDb();} }
+function persist(){ saveLocal(); clearTimeout(saveTimer); saveTimer=setTimeout(flushDb,800); }
+async function initDb(){
+  try{
+    const user=await claude.use("user"); const d=await claude.use("db");
+    if(!user||!d) return; uid=await user.id(); if(!uid) return;
+    db=d; docRef=db.doc("data/users/"+uid+"/progress");
+    const snap=await docRef.get();
+    if(snap.exists){ const r=snap.data(); state.done=Object.assign({},state.done,r.done||{}); state.problems=Object.assign({},state.problems,r.problems||{}); state.notes=Object.assign({},r.notes||{},state.notes); state.settings=Object.assign(state.settings,r.settings||{}); saveLocal(); render(); }
+    else { await docRef.set(state); }
+  }catch(e){}
+}
+
+/* ---------------- Scoring ---------------- */
+const XPK={code:30,ml:25,proj:25,fri:25,gym:10,home:5,journal:5,art:10,paint:10,content:10,income:10,life:0,office:0,sleep:0};
+function dayStats(d){ const list=sessionsFor(d); const k=iso(d); let xp=0,done=0,todo=0; const must={home:false,code:false,journal:false};
+  list.forEach((s,i)=>{ if(s.kind==="sleep"||s.kind==="office") return; todo++; if(state.done[k+":"+i]){ done++; xp+=XPK[s.kind]||0; if(s.kind in must) must[s.kind]=true; } });
+  const hasCode=list.some(s=>s.kind==="code"); if(!hasCode) must.code=true;
+  return {xp,done,todo,must,core:must.home&&must.code&&must.journal,any:list.length>0};
+}
+function streak(){ const now=new Date(); let d=new Date(now.getFullYear(),now.getMonth(),now.getDate()); let n=0; const first=new Date(2026,10,1);
+  const t=dayStats(d); if(!t.core){ d.setDate(d.getDate()-1); } // today not yet done: count up to yesterday
+  while(d>=first){ const s=dayStats(d); if(!s.any){ d.setDate(d.getDate()-1); continue; } if(s.core){ n++; d.setDate(d.getDate()-1); } else break; }
+  return {n,todayDone:t.core};
+}
+function weekStats(d){ const dow=(d.getDay()+6)%7; const mon=new Date(d.getFullYear(),d.getMonth(),d.getDate()-dow); let xp=0,done=0,todo=0,days=0; for(let i=0;i<7;i++){ const x=new Date(mon); x.setDate(mon.getDate()+i); const s=dayStats(x); xp+=s.xp; done+=s.done; todo+=s.todo; if(s.core) days++; } return {xp,done,todo,days,pct:todo?Math.round(done/todo*100):0}; }
+
+/* ---------------- Alerts ---------------- */
+let audioCtx=null;
+function unlockAudio(){ try{ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume(); }catch(e){} }
+function tone(notes,gain){ if(!state.settings.sound) return; try{ unlockAudio(); if(!audioCtx) return; const t0=audioCtx.currentTime; notes.forEach((f,i)=>{ const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type="sine"; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t0+i*0.2); g.gain.exponentialRampToValueAtTime(gain,t0+i*0.2+0.03); g.gain.exponentialRampToValueAtTime(0.0001,t0+i*0.2+0.45); o.connect(g); g.connect(audioCtx.destination); o.start(t0+i*0.2); o.stop(t0+i*0.2+0.5); }); }catch(e){} }
+const chime=n=>tone(n===2?[659,784,988,784,988,1175]:[659,988,1319],0.35);
+const ding=()=>tone([880,1109,1319],0.25);
+function showBanner(title,text,strong){ const b=document.getElementById("banner"); document.getElementById("bannerTitle").textContent=title; document.getElementById("bannerText").textContent=text; b.classList.add("show"); chime(strong?2:1);
+  if(state.settings.notify && "Notification" in window && Notification.permission==="granted"){ try{ new Notification(title,{body:text,tag:"plan-"+Date.now()}); }catch(e){} }
+  if(navigator.vibrate) try{navigator.vibrate(strong?[200,100,200]:[150]);}catch(e){} }
+document.getElementById("bannerClose").onclick=()=>document.getElementById("banner").classList.remove("show");
+const fired=new Set();
+function tick(){
+  const now=new Date(); const list=sessionsFor(now); const m=now.getHours()*60+now.getMinutes(); const day=iso(now); const pre=state.settings.preMin||10;
+  list.forEach((s,i)=>{ const kp=day+":"+i+":pre", ks=day+":"+i+":start";
+    if(s.s-m>0 && s.s-m<=pre && !fired.has(kp)){ fired.add(kp); const prev=list.slice(0,i).reverse().find(p=>p.e>m-1); showBanner(s.name+" starts in "+(s.s-m)+" min",(prev?"Wrap up "+prev.name+". ":"")+fmt(s.s)); }
+    if(m===s.s && !fired.has(ks)){ fired.add(ks); showBanner(s.name+" starts now", s.detail?s.detail.split("\n")[0]:fmt(s.s)+" to "+fmt(s.e), true); } });
+  if(m===21*60 && list.length && !fired.has(day+":risk")){ fired.add(day+":risk"); const st=dayStats(now); if(!st.core){ const left=["home","code","journal"].filter(k=>!st.must[k]).map(k=>({home:"call home",code:"one problem",journal:"journal"})[k]); showBanner("Streak at risk","Still left today: "+left.join(", ")+".",true); } }
+  if(cur()==="today") renderNowOnly();
+}
+
+/* ---------------- Confetti ---------------- */
+function confetti(){ if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; const c=document.getElementById("fx"); const ctx=c.getContext("2d"); c.width=innerWidth; c.height=innerHeight; const cols=["#F2A33A","#7BC47F","#E3B75C","#8FB3FF","#ECE6DA"]; const ps=[]; for(let i=0;i<70;i++) ps.push({x:innerWidth/2,y:innerHeight*0.4,vx:(Math.random()-0.5)*14,vy:-Math.random()*12-4,r:Math.random()*5+3,c:cols[i%cols.length],a:1,rot:Math.random()*6});
+  let t=0; (function f(){ ctx.clearRect(0,0,c.width,c.height); t++; ps.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.45; p.vx*=0.98; p.a-=0.018; p.rot+=0.1; ctx.save(); ctx.globalAlpha=Math.max(0,p.a); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.c; ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r); ctx.restore(); }); if(t<70) requestAnimationFrame(f); else ctx.clearRect(0,0,c.width,c.height); })(); }
+
+/* ---------------- Plant ---------------- */
+function plant(n){ const st=n>=30?5:n>=14?4:n>=7?3:n>=3?2:n>=1?1:0;
+  const pot='<path d="M26 78h32l-4 14H30z" fill="var(--live)" opacity=".85"/><rect x="24" y="74" width="36" height="6" rx="2" fill="var(--live)"/>';
+  const stem=st>0?'<path d="M42 74 C42 60 42 50 42 '+(74-10*st)+'" stroke="var(--done)" stroke-width="3" fill="none" stroke-linecap="round"/>':'<circle cx="42" cy="72" r="2.5" fill="var(--done)"/>';
+  const leaf=(x,y,f)=>'<path d="M'+x+' '+y+' q'+(f?12:-12)+' -6 '+(f?16:-16)+' 4 q-10 6 -16 -4z" fill="var(--done)"/>';
+  let leaves=""; if(st>=1) leaves+=leaf(42,66,true); if(st>=2) leaves+=leaf(42,58,false); if(st>=3) leaves+=leaf(42,50,true); if(st>=4) leaves+=leaf(42,42,false); if(st>=5) leaves+='<circle cx="42" cy="22" r="7" fill="var(--gold)"/><circle cx="42" cy="22" r="3" fill="var(--live)"/>';
+  return '<svg viewBox="0 0 84 96" aria-hidden="true">'+stem+leaves+pot+'</svg>'; }
+
+/* ---------------- Views ---------------- */
+let selDay=null, linkTab="problems", probWeek=0;
+function cur(){ return location.hash.replace("#","")||"today"; }
+function setNav(){ document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===cur())); }
+function render(){ setNav(); const v=cur(); const el=document.getElementById("view");
+  el.innerHTML = v==="week"?viewWeek(): v==="plan"?viewPlan(): v==="links"?viewLinks(): v==="setup"?viewSetup(): viewToday(); bind(); }
+function status(d){ const w=weekOf(d);
+  if(isPaused(d)){ const p=pauses().find(p=>iso(d)>=p.from&&iso(d)<=p.to); const back=new Date(p.to+"T12:00:00"); back.setDate(back.getDate()+1); return "Paused"+(p.why?" ("+p.why+")":"")+". Back "+back.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"}); }
+  if(iso(d)==="2026-11-01") return "Day 1, kickoff Sunday";
+  if(w===0){ const days=Math.ceil((new Date(2026,10,1)-d)/864e5); return "Starts Sun Nov 1 ("+days+" day"+(days===1?"":"s")+")"; }
+  if(w===13) return "Plan ended"; return "Week "+w+" of 12"+(w===1?" (ramp)":"")+(w===4||w===7?" (light)":""); }
+function renderNowOnly(){ const n=document.getElementById("nowCard"); if(n&&!document.activeElement.classList.contains("note")){ n.outerHTML=nowCard(new Date()); bind(); } }
+function clockStr(mins){ const t=Math.max(0,Math.round(mins*60)); const h=Math.floor(t/3600), mm=Math.floor(t%3600/60), ss=t%60; return (h?h+":"+String(mm).padStart(2,"0"):mm)+":"+String(ss).padStart(2,"0"); }
+function hero(now){ const s=streak(); const st=dayStats(now); const pct=st.todo?Math.round(st.done/st.todo*100):0; const r=26, c=2*Math.PI*r;
+  const left=["home","code","journal"].filter(k=>!st.must[k]).map(k=>({home:"call home",code:"one problem",journal:"journal"})[k]);
+  return '<section class="hero"><div><div class="streak">'+s.n+'<small>day streak'+(s.todayDone?", today counted":"")+'</small></div><div class="sub">'+(st.any?(s.todayDone?"Streak safe. Everything else is bonus.":left.length?"To keep the streak: "+left.join(", "):"Keep going"):"Rest day; streak holds")+'</div></div>'+
+   '<div class="ring"><svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="'+r+'" stroke="var(--surface2)" stroke-width="7" fill="none"/><circle cx="32" cy="32" r="'+r+'" stroke="var(--done)" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="'+c+'" stroke-dashoffset="'+(c*(1-pct/100))+'"/></svg><div class="pct">'+pct+'%</div></div></section>'; }
+function noteBox(key,open){ const v=state.notes[key]||""; if(!v&&!open) return '<button class="notebtn" data-note="'+key+'">Add note</button>'; return '<textarea class="note" data-notekey="'+key+'" placeholder="What did you do, what broke, what next">'+esc(v)+'</textarea>'; }
+function nowCard(now){
+  const list=sessionsFor(now); const m=now.getHours()*60+now.getMinutes()+now.getSeconds()/60; const w=Math.max(1,Math.min(12,weekOf(now)));
+  let ci=list.findIndex(s=>m>=s.s&&m<s.e); let html='<section class="card now" id="nowCard">';
+  if(!list.length){ return html+'<div class="label">'+status(now)+'</div><div class="title">'+(isPaused(now)?'Paused':'Rest day')+'</div><div class="detail">'+(isPaused(now)?'No sessions, no alerts, streak holds. The plan picks up exactly where you left it; week dates have shifted to match.':'Nothing scheduled today. Week and Plan show what is coming.')+'</div></section>'; }
+  if(ci===-1){ const nx=list.find(s=>s.s>m); if(nx){ html+='<div class="label">Free until '+fmt(nx.s)+'</div><div class="title">Nothing scheduled</div><div class="clock">'+clockStr(nx.s-m)+'<small>until '+esc(nx.name)+'</small></div>'; } else html+='<div class="label">Day done</div><div class="title">Sleep</div>'; return html+'</section>'; }
+  const s=list[ci]; const left=s.e-m; const pct=Math.min(100,Math.max(0,(m-s.s)/(s.e-s.s)*100)); const key=iso(now)+":"+ci; const done=!!state.done[key]; const nx=list[ci+1]; const vid=videoFor(s,w);
+  html+='<div class="label">Now, '+fmt(s.s)+' to '+fmt(s.e)+'</div><div class="title">'+esc(s.name)+'</div>'+(s.detail?'<div class="detail">'+esc(s.detail)+'</div>':'');
+  if(s.kind!=="sleep") html+='<div class="clock">'+clockStr(left)+'<small>left</small></div><div class="bar"><i style="width:'+pct.toFixed(1)+'%"></i></div>';
+  if(s.kind!=="sleep"&&s.kind!=="office"){ html+='<div class="btns"><button class="btn '+(done?'sec':'live')+'" data-done="'+key+'">'+(done?'Done':'Mark done')+'</button>'+(s.kind==="code"?'<a class="btn sec" href="#links">Problems</a>':'')+(vid?'<a class="btn sec" href="'+vid[1]+'" target="_blank" rel="noopener">&#9654; '+esc(vid[0])+'</a>':'')+'</div>'+noteBox(key,false); }
+  if(nx) html+='<div class="next"><span>Next <b>'+esc(nx.name)+'</b> at '+fmt(nx.s)+'</span><span class="pill">in '+Math.max(0,Math.round(nx.s-m))+' min</span></div>';
+  return html+'</section>'; }
+function dayList(d){ const list=sessionsFor(d); if(!list.length) return '<p class="muted">Nothing scheduled.</p>';
+  const now=new Date(); const sameDay=iso(d)===iso(now); const m=now.getHours()*60+now.getMinutes(); const w=Math.max(1,Math.min(12,weekOf(d)));
+  return '<section class="card">'+list.map((s,i)=>{ const key=iso(d)+":"+i; const done=!!state.done[key]; const cls=sameDay?(m>=s.s&&m<s.e?"cur":(m>=s.e?"past":"")):""; const vid=videoFor(s,w); const checkable=s.kind!=="sleep"&&s.kind!=="office";
+    return '<div class="row '+cls+'"><div class="t">'+fmt(s.s)+'</div><div class="n"><b>'+esc(s.name)+'</b>'+(s.detail?'<small>'+esc(s.detail)+'</small>':'')+(vid?'<a class="vid" href="'+vid[1]+'" target="_blank" rel="noopener">&#9654; '+esc(vid[0])+'</a>':'')+(checkable?'<div>'+noteBox(key,false)+'</div>':'')+'</div>'+(checkable?'<button class="chk" role="checkbox" aria-checked="'+done+'" aria-label="Done: '+esc(s.name)+'" data-done="'+key+'">'+(done?'&#10003;':'')+'</button>':'')+'</div>'; }).join("")+'</section>'; }
+function viewToday(){ const now=new Date(); document.getElementById("h1s").textContent=status(now); const st=dayStats(now); const ws=weekStats(now); const sk=streak();
+  return hero(now)+nowCard(now)+'<h2>'+DAYN[now.getDay()]+' '+now.toLocaleDateString(undefined,{month:"short",day:"numeric"})+(st.any?' <span class="pill '+(st.done===st.todo&&st.todo?'ok':'')+'">'+st.done+' of '+st.todo+'</span>':'')+'</h2>'+dayList(now)+
+  '<section class="card"><div class="plant">'+plant(sk.n)+'<div><b>This week</b><div class="xp"><div><b>'+ws.xp+'</b><span>XP</span></div><div><b>'+ws.pct+'%</b><span>sessions done</span></div><div><b>'+ws.days+'</b><span>streak days</span></div></div><p class="muted" style="margin:8px 0 0">'+(ws.pct>=80?"Over 80%: chest earned on Sunday.":"80% by Sunday earns the weekly chest.")+' The plant grows with the streak: 3, 7, 14 and 30 days.</p></div></div></section>'+notifHint(); }
+function notifHint(){ const perm=("Notification" in window)?Notification.permission:"unsupported"; if(perm==="granted"&&audioCtx) return "";
+  return '<section class="card"><b>Alerts</b><p class="muted" style="margin:6px 0 0">Sound and banners work while this page is open. '+(perm==="granted"?"":"Allow notifications in Setup so alerts also show when another app is in front. ")+'For alarms when the page is closed, add the calendar file (see Setup).</p><div class="btns"><button class="btn sec" id="unlock">Enable sound</button><a class="btn sec" href="#setup">Setup</a></div></section>'; }
+function viewWeek(){ const now=new Date(); if(!selDay) selDay=iso(now); const d=new Date(selDay+"T12:00:00"); const dow=(d.getDay()+6)%7; const mon=new Date(d); mon.setDate(d.getDate()-dow); document.getElementById("h1s").textContent=status(d); const ws=weekStats(d);
+  let html='<div class="wk">'; for(let i=0;i<7;i++){ const x=new Date(mon); x.setDate(mon.getDate()+i); const k=iso(x); const core=dayStats(x).core; html+='<button data-day="'+k+'" class="'+(k===selDay?'on ':'')+(k===iso(now)?'today':'')+'"><b>'+x.getDate()+'</b>'+DAYN[x.getDay()]+(core?'<i></i>':'')+'</button>'; } html+='</div>';
+  html+='<div class="btns" style="margin:0 0 10px"><button class="btn sec" data-shift="-7">Previous week</button><button class="btn sec" data-shift="7">Next week</button><span class="pill" style="align-self:center">'+ws.xp+' XP, '+ws.pct+'%</span></div>';
+  return html+dayList(d); }
+function viewPlan(){ const now=new Date(); const w=weekOf(now); document.getElementById("h1s").textContent="12 weeks";
+  return WEEKS.map(W=>'<section class="card" '+(W.w===w?'style="border-color:var(--live)"':'')+'><b>Week '+W.w+', '+W.d+'</b>'+(W.w===w?' <span class="pill warn">this week</span>':'')+'<ul><li>Mornings: '+esc(W.code)+'</li><li>Mon/Tue and Sun: '+esc(W.ml)+'</li><li>Wed/Thu and weekend: '+esc(W.proj)+'</li><li>Friday: '+esc(W.fri)+'</li><li>Art: '+esc(ART[W.w-1])+'. Sunday: '+esc(ARTSUN[W.w-1])+'</li></ul></section>').join(""); }
+function viewLinks(){ const now=new Date(); const w=Math.min(12,Math.max(1,weekOf(now))); document.getElementById("h1s").textContent="Resources";
+  const tabs=[["problems","Problems"],["coding","Coding"],["ml","ML"],["gpu","GPU / NVIDIA"],["papers","Papers"],["jobs","Jobs"],["art","Art"],["income","Income"]];
+  let html='<div class="tabs">'+tabs.map(t=>'<button data-tab="'+t[0]+'" class="'+(linkTab===t[0]?'on':'')+'">'+t[1]+'</button>').join("")+'</div>';
+  if(linkTab==="problems"){ const tot=PROBLEMS.length, dn=PROBLEMS.filter(p=>state.problems[p[3]]).length; const pw=probWeek||w;
+    html+='<p class="muted">'+dn+' of '+tot+' done. Week '+pw+'. <span class="pill">'+Math.round(dn/tot*100)+'%</span></p><div class="tabs">'+[1,2,3,4,5,6,8,9,10,11,12].map(k=>'<button data-pw="'+k+'" class="'+(pw===k?'on':'')+'">'+k+'</button>').join("")+'</div><section class="card">';
+    html+=PROBLEMS.filter(p=>p[0]===pw).map(p=>{ const d=!!state.problems[p[3]]; return '<div class="prob"><button class="chk" role="checkbox" aria-checked="'+d+'" aria-label="Done: '+esc(p[1])+'" data-prob="'+p[3]+'">'+(d?'&#10003;':'')+'</button><span class="lv">'+p[2]+'</span><span class="nm">'+esc(p[1])+'</span><a href="https://leetcode.com/problems/'+p[3]+'/" target="_blank" rel="noopener">Solve</a><a href="'+YT("NeetCode "+p[1])+'" target="_blank" rel="noopener">Video</a></div>'; }).join("")||'<p class="muted">Review week: redo the 3 hardest so far.</p>'; html+='</section>'; }
+  else html+='<section class="card">'+LINKS[linkTab].map(l=>'<div class="prob"><span class="nm">'+esc(l[0])+'</span><a href="'+l[1]+'" target="_blank" rel="noopener">Open</a></div>').join("")+'</section>';
+  return html; }
+function viewSetup(){ document.getElementById("h1s").textContent="Setup"; const perm=("Notification" in window)?Notification.permission:"unsupported"; const st=state.settings; const standalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone;
+  return '<section class="card"><b>Alerts</b><div class="kv" style="margin-top:8px"><span>Sound</span><button class="btn sec" id="tSound">'+(st.sound?'On':'Off')+'</button><span>Banner before a session</span><button class="btn sec" id="tPre">'+st.preMin+' min</button><span>System notifications</span>'+(perm==="granted"?'<span class="pill ok">allowed</span>':perm==="denied"?'<span class="pill warn">blocked in browser settings</span>':perm==="unsupported"?'<span class="pill warn">not on this browser</span>':'<button class="btn" id="askNotif">Allow</button>')+'</div><div class="btns"><button class="btn sec" id="testAlert">Test alert</button></div>'+
+   '<p class="muted" style="margin:10px 0 0">On Mac, Chrome or Safari show notifications once allowed while the tab is open. On iPhone and iPad, Safari shows notifications only from a page added to the Home Screen (Share, then Add to Home Screen). '+(standalone?'You are in the Home Screen app now.':'You are in a browser tab now.')+'</p></section>'+
+   '<section class="card"><b>Alarms when the page is closed</b><p class="muted" style="margin:6px 0 0">Import plan-alarms.ics into Apple Calendar on one device. Every session gets a 10-minute alert with sound on iPhone, iPad and Mac. This page is for the countdown, the detail, notes and streak.</p></section>'+
+   '<section class="card"><b>Streak rule</b><p class="muted" style="margin:6px 0 0">A day counts when three things are done: call home, the coding session, journal. Rest days (before Nov 1, after Jan 24) do not break it. A 9 pm alert fires if any of the three is still open.</p></section>'+
+   '<section class="card"><b>Pause the plan</b><p class="muted" style="margin:6px 0 0">Paused days have no sessions and no alerts, the streak holds, and every later week shifts by the paused days so nothing is skipped.</p>'+(pauses().map((p,i)=>'<div class="kv" style="margin-top:8px"><span>'+p.from+' to '+p.to+(p.why?' ('+esc(p.why)+')':'')+'</span><button class="btn sec" data-unpause="'+i+'">Remove</button></div>').join("")||'<p class="muted">No pauses.</p>')+'<div class="btns" style="align-items:center"><input type="date" id="pFrom" class="note" style="width:auto;margin:0"><input type="date" id="pTo" class="note" style="width:auto;margin:0"><input type="text" id="pWhy" class="note" placeholder="Reason" style="width:110px;margin:0;min-height:0"><button class="btn" id="addPause">Add pause</button></div></section>'+
+   '<section class="card"><b>Sync</b><p class="muted" style="margin:6px 0 0">'+(docRef?'Checkmarks and notes sync across your devices through your Claude account.':'Saved on this device only. Open the page through claude.ai while signed in to sync.')+'</p></section>'+
+   '<section class="card"><b>Appearance</b><div class="btns"><button class="btn sec" data-theme="dark">Night desk (dark)</button><button class="btn sec" data-theme="light">Light</button><button class="btn sec" data-theme="">Follow device</button></div></section>'+
+   '<section class="card"><b>Reset</b><div class="btns"><button class="btn sec" id="reset">Clear all progress</button></div></section>'; }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+/* ---------------- Events ---------------- */
+function bind(){
+  document.querySelectorAll("[data-done]").forEach(b=>b.onclick=()=>{ unlockAudio(); const k=b.dataset.done; const was=!!state.done[k]; if(was) delete state.done[k]; else state.done[k]=true; persist(); if(!was){ ding(); const st=dayStats(new Date()); if(st.core&&k.startsWith(iso(new Date()))){ const sk=streak(); if(sk.todayDone) confetti(); } } render(); });
+  document.querySelectorAll("[data-prob]").forEach(b=>b.onclick=()=>{ const k=b.dataset.prob; const was=!!state.problems[k]; if(was) delete state.problems[k]; else { state.problems[k]=true; ding(); } persist(); render(); });
+  document.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ selDay=b.dataset.day; render(); });
+  document.querySelectorAll("[data-shift]").forEach(b=>b.onclick=()=>{ const d=new Date(selDay+"T12:00:00"); d.setDate(d.getDate()+Number(b.dataset.shift)); selDay=iso(d); render(); });
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{ linkTab=b.dataset.tab; render(); });
+  document.querySelectorAll("[data-pw]").forEach(b=>b.onclick=()=>{ probWeek=Number(b.dataset.pw); render(); });
+  document.querySelectorAll("[data-theme]").forEach(b=>b.onclick=()=>{ const t=b.dataset.theme; if(t) document.documentElement.setAttribute("data-theme",t); else document.documentElement.removeAttribute("data-theme"); try{localStorage.setItem("plan-theme",t);}catch(e){} });
+  document.querySelectorAll("[data-note]").forEach(b=>b.onclick=()=>{ b.outerHTML=noteBox(b.dataset.note,true); bind(); const ta=document.querySelector('textarea[data-notekey="'+b.dataset.note+'"]'); if(ta) ta.focus(); });
+  document.querySelectorAll("textarea[data-notekey]").forEach(t=>{ t.oninput=()=>{ state.notes[t.dataset.notekey]=t.value; persist(); }; });
+  const u=document.getElementById("unlock"); if(u) u.onclick=()=>{ unlockAudio(); chime(1); render(); };
+  const ts=document.getElementById("tSound"); if(ts) ts.onclick=()=>{ state.settings.sound=!state.settings.sound; unlockAudio(); persist(); render(); };
+  const tp=document.getElementById("tPre"); if(tp) tp.onclick=()=>{ const o=[5,10,15]; state.settings.preMin=o[(o.indexOf(state.settings.preMin)+1)%o.length]; persist(); render(); };
+  const an=document.getElementById("askNotif"); if(an) an.onclick=async()=>{ unlockAudio(); try{ await Notification.requestPermission(); }catch(e){} render(); };
+  const ta=document.getElementById("testAlert"); if(ta) ta.onclick=()=>{ unlockAudio(); showBanner("Coding starts in 10 min","Wrap up Breakfast. This is a test.",true); confetti(); };
+  document.querySelectorAll("[data-unpause]").forEach(b=>b.onclick=()=>{ state.settings.pauses.splice(Number(b.dataset.unpause),1); persist(); render(); });
+  const ap=document.getElementById("addPause"); if(ap) ap.onclick=()=>{ const f=document.getElementById("pFrom").value, t=document.getElementById("pTo").value, w=document.getElementById("pWhy").value.trim(); if(!f||!t||t<f){ alert("Pick a start and an end date."); return; } if(!state.settings.pauses) state.settings.pauses=[]; state.settings.pauses.push({from:f,to:t,why:w}); state.settings.pauses.sort((a,b)=>a.from<b.from?-1:1); persist(); render(); };
+  const rs=document.getElementById("reset"); if(rs) rs.onclick=()=>{ if(confirm("Clear all checkmarks and notes?")){ state.done={}; state.problems={}; state.notes={}; persist(); render(); } };
+}
+window.addEventListener("hashchange",render);
+document.addEventListener("click",unlockAudio,{once:true});
+document.addEventListener("touchstart",unlockAudio,{once:true});
+try{ const t=localStorage.getItem("plan-theme"); if(t===""||t==="light") { if(t) document.documentElement.setAttribute("data-theme",t); else document.documentElement.removeAttribute("data-theme"); } }catch(e){}
+loadLocal(); render(); setInterval(tick,1000); tick();
+if(window.claude&&window.claude.use) initDb();
+</script>
+</body>
+</html>
