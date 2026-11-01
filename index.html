@@ -55,7 +55,8 @@ h2{font-size:14px;font-weight:600;margin:20px 0 8px;color:var(--ink2)}
 .row:last-child{border-bottom:0}
 .row.cur{background:var(--live-soft);margin:0 -16px;padding:10px 16px;border-radius:8px}
 .row.past{opacity:.55}
-.row .t{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:14px;width:84px;flex:none;padding-top:2px}
+.row .t{font-variant-numeric:tabular-nums;color:var(--ink2);font-size:13px;width:92px;flex:none;padding-top:3px;line-height:1.3}
+.row .t b{display:block;color:var(--ink);font-weight:600;font-size:14px}
 .row .n{flex:1;min-width:0}
 .row .n b{font-weight:600}
 .row .n small{display:block;color:var(--ink2);font-size:13px;white-space:pre-line}
@@ -385,7 +386,7 @@ function nowCard(now){
 function dayList(d){ const list=sessionsFor(d); if(!list.length) return '<p class="muted">Nothing scheduled.</p>';
   const now=new Date(); const sameDay=iso(d)===iso(now); const m=now.getHours()*60+now.getMinutes(); const w=Math.max(1,Math.min(12,weekOf(d)));
   return '<section class="card">'+list.map((s,i)=>{ const key=iso(d)+":"+i; const done=!!state.done[key]; const cls=sameDay?(m>=s.s&&m<s.e?"cur":(m>=s.e?"past":"")):""; const vid=videoFor(s,w); const checkable=s.kind!=="sleep"&&s.kind!=="office";
-    return '<div class="row '+cls+'"><div class="t">'+fmt(s.s)+'</div><div class="n"><b>'+esc(s.name)+'</b>'+(s.detail?'<small>'+esc(s.detail)+'</small>':'')+(vid?'<a class="vid" href="'+vid[1]+'" target="_blank" rel="noopener">&#9654; '+esc(vid[0])+'</a>':'')+(checkable?'<div>'+noteBox(key,false)+'</div>':'')+'</div>'+(checkable?'<button class="chk" role="checkbox" aria-checked="'+done+'" aria-label="Done: '+esc(s.name)+'" data-done="'+key+'">'+(done?'&#10003;':'')+'</button>':'')+'</div>'; }).join("")+'</section>'; }
+    return '<div class="row '+cls+'"><div class="t"><b>'+fmt(s.s)+'</b>'+(s.kind==="sleep"?'':'to '+fmt(s.e))+'</div><div class="n"><b>'+esc(s.name)+'</b>'+(s.detail?'<small>'+esc(s.detail)+'</small>':'')+(vid?'<a class="vid" href="'+vid[1]+'" target="_blank" rel="noopener">&#9654; '+esc(vid[0])+'</a>':'')+(checkable?'<div>'+noteBox(key,false)+'</div>':'')+'</div>'+(checkable?'<button class="chk" role="checkbox" aria-checked="'+done+'" aria-label="Done: '+esc(s.name)+'" data-done="'+key+'">'+(done?'&#10003;':'')+'</button>':'')+'</div>'; }).join("")+'</section>'; }
 function viewToday(){ const now=new Date(); document.getElementById("h1s").textContent=status(now); const st=dayStats(now); const ws=weekStats(now); const sk=streak();
   return hero(now)+nowCard(now)+'<h2>'+DAYN[now.getDay()]+' '+now.toLocaleDateString(undefined,{month:"short",day:"numeric"})+(st.any?' <span class="pill '+(st.done===st.todo&&st.todo?'ok':'')+'">'+st.done+' of '+st.todo+'</span>':'')+'</h2>'+dayList(now)+
   '<section class="card"><div class="plant">'+plant(sk.n)+'<div><b>This week</b><div class="xp"><div><b>'+ws.xp+'</b><span>XP</span></div><div><b>'+ws.pct+'%</b><span>sessions done</span></div><div><b>'+ws.days+'</b><span>streak days</span></div></div><p class="muted" style="margin:8px 0 0">'+(ws.pct>=80?"Over 80%: chest earned on Sunday.":"80% by Sunday earns the weekly chest.")+' The plant grows with the streak: 3, 7, 14 and 30 days.</p></div></div></section>'+notifHint(); }
